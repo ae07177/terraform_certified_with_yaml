@@ -1,0 +1,55 @@
+vpc:
+  - name: prd_vpc
+    cidr_block: "10.0.0.0/16"
+    subnet:
+      vpc1_pub1:
+        cidr_block: "10.0.1.0/24"
+        availability_zone: us-east-1a
+        public: true
+        tags:
+          Name: vpc1_pub1
+      vpc1_priv1:
+        cidr_block: "10.0.3.0/24"
+        availability_zone: us-east-1b
+        public: false
+        tags:
+          Name: vpc1_priv1
+    internet_gateway:
+      vpc1_pub1:
+        name: igw1
+    nat_gateway:
+      vpc1_pub1:
+        name: ngw1
+        private: false
+        public: true
+      vpc1_priv1:
+        name: ngw1
+        private: true
+        public: false
+    env: prd
+    tags:
+     Name: prd_vpc
+     env: prd
+     purpose: prd_demo
+  - name: qat_vpc
+    cidr_block: "10.0.0.0/16"
+    subnet:
+      vpc2_pub1:
+        cidr_block: "10.0.2.0/24"
+        availability_zone: us-east-1b
+        public: true
+        tags:
+          Name: vpc2_pub1
+    env: qat
+    internet_gateway:
+      vpc2_pub1:
+        name: igw1
+    nat_gateway:
+      vpc2_pub1:
+        name: ngw1
+        private: false
+        public: true
+    tags:
+     env: qat
+     Name: qat_vpc
+     purpose: qat_demo
