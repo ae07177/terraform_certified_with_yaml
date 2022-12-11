@@ -1,0 +1,12 @@
+variable "user_names" {
+  description = "Create IAM users with these names"
+  type        = list(string)
+  default     = ["neo",  "morpheus" ]
+}
+
+resource "null_resource" "example" {
+  count = length(var.user_names)
+  triggers = {
+  name  = var.user_names[count.index]
+  }
+}

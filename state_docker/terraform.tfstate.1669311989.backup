@@ -1,0 +1,140 @@
+{
+  "version": 4,
+  "terraform_version": "1.3.3",
+  "serial": 3,
+  "lineage": "607752f3-7d5b-4a61-37cf-266efdc050aa",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "docker_container",
+      "name": "centos7-tf",
+      "provider": "provider[\"registry.terraform.io/kreuzwerker/docker\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "attach": false,
+            "bridge": "",
+            "capabilities": [],
+            "command": [
+              "sleep",
+              "500"
+            ],
+            "container_logs": null,
+            "container_read_refresh_timeout_milliseconds": 15000,
+            "cpu_set": "",
+            "cpu_shares": 0,
+            "destroy_grace_seconds": null,
+            "devices": [],
+            "dns": null,
+            "dns_opts": null,
+            "dns_search": null,
+            "domainname": "",
+            "entrypoint": [],
+            "env": [],
+            "exit_code": null,
+            "gateway": "172.17.0.1",
+            "gpus": null,
+            "group_add": null,
+            "healthcheck": null,
+            "host": [],
+            "hostname": "7177dffe73e8",
+            "id": "7177dffe73e858bfb51e09604b585be37407ef6427ff21287ee9863cdece1979",
+            "image": "sha256:eeb6ee3f44bd0b5103bb561b4c16bcb82328cfe5809ab675bb17ab3a16c517c9",
+            "init": false,
+            "ip_address": "172.17.0.2",
+            "ip_prefix_length": 16,
+            "ipc_mode": "private",
+            "labels": [],
+            "links": null,
+            "log_driver": "json-file",
+            "log_opts": null,
+            "logs": false,
+            "max_retry_count": 0,
+            "memory": 0,
+            "memory_swap": 0,
+            "mounts": [],
+            "must_run": true,
+            "name": "tf-centos7",
+            "network_alias": null,
+            "network_data": [
+              {
+                "gateway": "172.17.0.1",
+                "global_ipv6_address": "",
+                "global_ipv6_prefix_length": 0,
+                "ip_address": "172.17.0.2",
+                "ip_prefix_length": 16,
+                "ipv6_gateway": "",
+                "network_name": "bridge"
+              }
+            ],
+            "network_mode": "default",
+            "networks": null,
+            "networks_advanced": [],
+            "pid_mode": "",
+            "ports": [],
+            "privileged": false,
+            "publish_all_ports": false,
+            "read_only": false,
+            "remove_volumes": true,
+            "restart": "no",
+            "rm": false,
+            "runtime": "runc",
+            "security_opts": [],
+            "shm_size": 64,
+            "start": true,
+            "stdin_open": false,
+            "stop_signal": "",
+            "stop_timeout": 0,
+            "storage_opts": null,
+            "sysctls": null,
+            "tmpfs": null,
+            "tty": false,
+            "ulimit": [],
+            "upload": [],
+            "user": "",
+            "userns_mode": "",
+            "volumes": [],
+            "wait": false,
+            "wait_timeout": 60,
+            "working_dir": ""
+          },
+          "sensitive_attributes": [],
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjIifQ==",
+          "dependencies": [
+            "docker_image.tf-centos"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "docker_image",
+      "name": "tf-centos",
+      "provider": "provider[\"registry.terraform.io/kreuzwerker/docker\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "build": [],
+            "force_remove": null,
+            "id": "sha256:eeb6ee3f44bd0b5103bb561b4c16bcb82328cfe5809ab675bb17ab3a16c517c9centos:7",
+            "image_id": "sha256:eeb6ee3f44bd0b5103bb561b4c16bcb82328cfe5809ab675bb17ab3a16c517c9",
+            "keep_locally": true,
+            "latest": "sha256:eeb6ee3f44bd0b5103bb561b4c16bcb82328cfe5809ab675bb17ab3a16c517c9",
+            "name": "centos:7",
+            "output": null,
+            "pull_trigger": null,
+            "pull_triggers": null,
+            "repo_digest": "centos@sha256:c73f515d06b0fa07bb18d8202035e739a494ce760aa73129f60f4bf2bd22b407",
+            "triggers": null
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA=="
+        }
+      ]
+    }
+  ],
+  "check_results": []
+}

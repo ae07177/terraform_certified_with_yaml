@@ -1,0 +1,6 @@
+resource "null_resource" "example" {
+  count = 3
+  triggers = {
+  name  = "user${count.index}"
+  }
+}

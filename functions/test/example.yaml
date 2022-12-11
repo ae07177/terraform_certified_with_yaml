@@ -1,0 +1,11 @@
+# example.yaml
+
+data:
+  name: John
+  surname: Smith
+  age: 38
+
+description:
+  name: Name of the person
+  surname: Family name of the person
+  age: Age in years

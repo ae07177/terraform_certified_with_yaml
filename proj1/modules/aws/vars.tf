@@ -1,6 +1,6 @@
 locals {
   ##Stores all VPC elements inside "vpcs" variable
-  all_data = yamldecode(file("/Users/arvind/terraform-code/terraform_certified_with_yaml/git_repo/proj1/vars.yaml"))
+  all_data = yamldecode(file("/Users/arvind/terraform_certified_with_yaml/proj1/vars.yaml"))
 
   ## To be used in vpc.tf
   vpcs = local.all_data.vpc

@@ -1,0 +1,19 @@
+variable "enable_null" {
+  description = "If set to true, enable auto scaling"
+  type        = bool
+  default     = true
+}
+
+variable "users" {
+  type = map(string)
+  default =  {
+    name = "arvind"
+  }
+}
+
+resource "null_resource" "count_cond" {
+  count = var.enable_null ? 1 : 0
+  triggers =  {
+    for name, role in var.users : name => role
+  }
+}

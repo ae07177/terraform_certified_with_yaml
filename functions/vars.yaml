@@ -1,0 +1,15 @@
+vpc:
+  - name: vpc1
+    subnet:
+    - name: sub1
+      range: "10.0.1.0/24"
+    env: prd
+    tags:
+    - prd
+  - name: vpc2
+    subnet:
+    - name: sub2
+      range: "10.0.2.0/24"
+    env: ppr
+    tags:
+    - ppr

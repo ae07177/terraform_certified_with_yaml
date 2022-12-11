@@ -1,0 +1,16 @@
+variable "users" {
+  type = map(string)
+  default = {
+   user1 = "Arvind"
+  }
+}
+
+resource "null_resource" "for_con" {
+  for_each = {
+    for k,v in var.users: k=> upper(v)
+    if k != "Name"
+  }
+    triggers = {
+     user = each.value
+    }
+}
