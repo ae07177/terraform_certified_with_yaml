@@ -1,6 +1,13 @@
+variable "yaml_file" {
+  type        = string
+  description = "file location for yaml config data"
+  #default     = "/Users/arvind/terraform_certified_with_yaml/proj1/vars.yaml"
+  default     = null
+}
+
 locals {
   ##Stores all VPC elements inside "vpcs" variable
-  all_data = yamldecode(file("/Users/arvind/terraform_certified_with_yaml/proj1/vars.yaml"))
+  all_data = yamldecode(file("${var.yaml_file}"))
 
   ## To be used in vpc.tf
   vpcs = local.all_data.vpc
