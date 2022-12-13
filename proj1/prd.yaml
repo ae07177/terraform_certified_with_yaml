@@ -2,18 +2,6 @@ vpc:
   - name: prd_vpc
     cidr_block: "10.0.0.0/16"
     subnet:
-      vpc1_pub1:
-        cidr_block: "10.0.1.0/24"
-        availability_zone: us-east-1a
-        public: true
-        tags:
-          Name: vpc1_pub1
-      vpc1_priv1:
-        cidr_block: "10.0.3.0/24"
-        availability_zone: us-east-1b
-        public: false
-        tags:
-          Name: vpc1_priv1
     internet_gateway:
       vpc1_pub1:
         name: igw1

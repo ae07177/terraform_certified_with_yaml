@@ -2,7 +2,7 @@ resource "aws_subnet" "aws_subnet" {
   for_each = {
     for s in local.subnets :
     "${s.vpc_id}:${s.subnet_name}" => s
-    if  contains([ s.env ], "prd" )
+    if  contains([ s.env ], "prd" ) && local.subnets != null
   }
 
   availability_zone = each.value.availability_zone

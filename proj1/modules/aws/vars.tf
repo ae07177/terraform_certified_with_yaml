@@ -15,14 +15,14 @@ locals {
   ## To be used in subnets.tf
   subnets = flatten([
     for vpc in local.vpcs : [
-      for k, v in vpc.subnet : {
-        env               = vpc.env
-        subnet_name       = k
-        vpc_id            = vpc.name
-        cidr_block        = v.cidr_block
-        availability_zone = v.availability_zone
-        tags              = v.tags
-        public            = v.public
+      for k, v in ( vpc.subnet == null ? {} : vpc.subnet ) : {
+        env               = vpc.env == null ? "dev" : vpc.env
+        subnet_name       = k == null ? "" : k
+        vpc_id            = vpc.name == null ? "" : vpc.name
+        cidr_block        = v.cidr_block == null ? "" : v.cidr_block
+        availability_zone = v.availability_zone == null ? "" : v.availability_zone
+        tags              = v.tags == null ? {} : v.tags
+        public            = v.public == null ? true : false
       }
     ]
   ])
