@@ -1,1 +1,8 @@
 proj1/.terraform
+dynamic_blocks/.terraform
+module_example/.terraform
+functions/.terraform
+loops/.terraform
+functions/test/.terraform
+functions/test1/.terraform
+loops/modules/for_each/.terraform

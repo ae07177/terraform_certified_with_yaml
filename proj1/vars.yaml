@@ -1,6 +1,22 @@
 vpc:
   - name: prd_vpc
     cidr_block: "10.0.0.0/16"
+    security_groups:
+      sg1:
+       info:    Allow from My IP and Public Subnet
+       ingress: security_groups/sg1_ingress
+       egress:  security_groups/sg1_egress
+    instances:
+      prd_fis1:
+        subnet: vpc1_pub1
+        type: t3.small
+        user_data:  /Users/arvind/terraform_certified_with_yaml/proj1/bootstrap.sh
+        sgs: "sg1"
+        key_name: arvind_key
+        public: true
+    public_key: 
+      arvind_key:
+        path:  "~/.ssh/id_rsa.pub"
     subnet:
       vpc1_pub1:
         cidr_block: "10.0.1.0/24"
@@ -33,6 +49,22 @@ vpc:
      purpose: prd_demo
   - name: qat_vpc
     cidr_block: "10.0.0.0/16"
+    security_groups:
+      sg1:
+       info:    Allow from My IP and Public Subnet
+       ingress: security_groups/sg1_ingress
+       egress:  security_groups/sg1_egress
+    instances:
+      qat_fis1:
+        subnet: vpc2_pub1
+        type: t3.micro
+        user_data:  /Users/arvind/terraform_certified_with_yaml/proj1/bootstrap.sh
+        sgs: "sg1"
+        key_name: arvind_key
+        public: true
+    public_key: 
+      arvind_key:
+        path:  "~/.ssh/id_rsa.pub"
     subnet:
       vpc2_pub1:
         cidr_block: "10.0.2.0/24"

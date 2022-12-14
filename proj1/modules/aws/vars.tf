@@ -54,4 +54,45 @@ locals {
     ]
   ])
 
+  ## Extract Public Key
+  pub_key = flatten([
+    for vpc in local.vpcs : [
+      for k, v in vpc.public_key : {
+         env        = vpc.env
+         key_name   = k
+         public_key = file(v.path)
+      }
+    ]
+  ])
+
+  ## To be used in nat_gateway.tf
+  ec2 = flatten([
+    for vpc in local.vpcs : [
+      for k, v in vpc.instances : {
+        vpc_name          = vpc.name
+        env               = vpc.env
+        instance_name     = k
+        subnet_name       = v.subnet
+        type              = v.type
+        user_data         = v.user_data
+        sgs               = v.sgs
+        key_name          = v.key_name
+        public            = v.public
+      }
+    ]
+  ])
+
+  sgroups = flatten([
+    for vpc in local.vpcs : [
+      for k, v in vpc.security_groups : {
+          env          = vpc.env
+          vpc_name          = vpc.name
+          sg_name = k
+          ingress_path = v.ingress
+          egress_path  = v.egress
+          info  = v.info
+        }
+      ]
+  ])
+
 }

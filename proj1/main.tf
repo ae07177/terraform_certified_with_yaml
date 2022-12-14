@@ -1,6 +1,6 @@
 provider "aws" {
   region  = "us-east-1"
-  profile = "acguru"
+  profile = "default"
 }
 
 variable "yaml_config" {
@@ -12,6 +12,6 @@ variable "yaml_config" {
 
 
 module "vpc" {
-  source = "./modules/aws"
+  source    = "./modules/aws"
   yaml_file = var.yaml_config
 }
