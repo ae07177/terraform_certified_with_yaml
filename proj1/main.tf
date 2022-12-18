@@ -10,8 +10,11 @@ variable "yaml_config" {
   #default     = null
 }
 
+#variable "security_group_name" {}
+
 
 module "vpc" {
   source    = "./modules/aws"
   yaml_file = var.yaml_config
+  #  security_group_name = var.security_group_name
 }

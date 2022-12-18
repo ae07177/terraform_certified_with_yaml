@@ -1,17 +1,71 @@
 vpc:
   - name: prd_vpc
     cidr_block: "10.0.0.0/16"
+    autoscaling_group:
+      fis_asg:
+        launch_config:
+        - prd_fis1
+        vpc_zone_identifier: 
+        -  vpc1_pub1
+        -  vpc1_pub2
+        max_size: 4
+        min_size: 2
+        health_check_grace_period: 60
+        health_check_type: ELB
+        desired_capacity: 2
+        force_delete: true
+        launch_configuration: prd_fis1
+        target_group_arns:
+        - fis-target-group
+    lb_target_group:
+      fis-target-group:
+        port: 80
+        protocol: HTTP
+        target_type: instance
+        hc_enabled: true
+        hc_path: /
+        hc_timeout: 10
+    lb_listener:
+      fis-listener:
+        lb: fis-lb
+        port: 80
+        protocol: HTTP
+        tgroup: fis-target-group
+        tgroup_type: forward
+    load_balancer:
+      fis-lb:
+        type: application
+        internal: false
+        security_groups:
+        - lb_sg
+        subnets:
+        - vpc1_pub1
+        - vpc1_pub2
+    security_group_rule:
+      allow_lb_to_ec2:
+        info:    Allow from LB to Access EC2
+        type: ingress
+        from_port: 0
+        to_port: 0
+        source_group: lb_sg
+        dest_group: ec2_sg
+        protocol: -1
     security_groups:
-      sg1:
+      lb_sg:
        info:    Allow from My IP and Public Subnet
        ingress: security_groups/sg1_ingress
        egress:  security_groups/sg1_egress
+      ec2_sg:
+       info:    Allow from Load Balancer
+       ingress: security_groups/ec2_ingress
+       egress:  security_groups/ec2_egress
+       depends_on: lb_sg
     instances:
       prd_fis1:
         subnet: vpc1_pub1
         type: t3.small
         user_data:  /Users/arvind/terraform_certified_with_yaml/proj1/bootstrap.sh
-        sgs: "sg1"
+        sgs: ec2_sg
         key_name: arvind_key
         public: true
     public_key: 
@@ -21,24 +75,41 @@ vpc:
       vpc1_pub1:
         cidr_block: "10.0.1.0/24"
         availability_zone: us-east-1a
+        associate_with: igw1
         public: true
         tags:
           Name: vpc1_pub1
+      vpc1_pub2:
+        cidr_block: "10.0.2.0/24"
+        availability_zone: us-east-1b
+        associate_with: igw1
+        public: true
+        tags:
+          Name: vpc1_pub2
       vpc1_priv1:
         cidr_block: "10.0.3.0/24"
-        availability_zone: us-east-1b
+        availability_zone: us-east-1a
+        associate_with: ngw1
         public: false
         tags:
           Name: vpc1_priv1
+      vpc1_priv2:
+        cidr_block: "10.0.4.0/24"
+        availability_zone: us-east-1b
+        associate_with: ngw1
+        public: false
+        tags:
+          Name: vpc1_priv2
     internet_gateway:
-      vpc1_pub1:
-        name: igw1
+      igw1:
+      - vpc1_pub1
+      - vpc1_pub2
     nat_gateway:
-      vpc1_pub1:
-        name: ngw1
-        private: false
-        public: true
       vpc1_priv1:
+        name: ngw1
+        private: true
+        public: false
+      vpc1_priv2:
         name: ngw1
         private: true
         public: false
@@ -49,17 +120,70 @@ vpc:
      purpose: prd_demo
   - name: qat_vpc
     cidr_block: "10.0.0.0/16"
+    autoscaling_group:
+      fis_asg:
+        launch_config:
+        - qat_fis1
+        vpc_zone_identifier:
+        -  vpc2_pub1
+        -  vpc2_pub2
+        max_size: 4
+        min_size: 2
+        health_check_grace_period: 60
+        health_check_type: ELB
+        desired_capacity: 2
+        force_delete: true
+        launch_configuration: qat_fis1
+        target_group_arns:
+        - fis-target-group
+    lb_target_group:
+      fis-target-group:
+        port: 80
+        protocol: HTTP
+        target_type: instance
+        hc_enabled: true
+        hc_path: /
+        hc_timeout: 10
+    lb_listener:
+      fis-listener:
+        port: 80
+        protocol: HTTP
+        lb: fis-lb
+        tgroup: fis-target-group
+        tgroup_type: forward
+    load_balancer:
+      fis_lb:
+        type: application
+        internal: false
+        security_groups:
+        - lb_sg
+        subnets:
+        - vpc2_pub1
+        - vpc2_pub2
+    security_group_rule:
+      allow_lb_to_ec2:
+        info:    Allow from LB to Access EC2
+        type: ingress
+        from_port: 0
+        to_port: 0
+        source_group: lb_sg
+        dest_group: ec2_sg
+        protocol: -1
     security_groups:
-      sg1:
+      lb_sg:
        info:    Allow from My IP and Public Subnet
        ingress: security_groups/sg1_ingress
        egress:  security_groups/sg1_egress
+      ec2_sg:
+       info:    Allow from Load Balancer
+       ingress: security_groups/ec2_ingress
+       egress:  security_groups/ec2_egress
     instances:
       qat_fis1:
         subnet: vpc2_pub1
         type: t3.micro
         user_data:  /Users/arvind/terraform_certified_with_yaml/proj1/bootstrap.sh
-        sgs: "sg1"
+        sgs: ec2_sg
         key_name: arvind_key
         public: true
     public_key: 
@@ -67,20 +191,47 @@ vpc:
         path:  "~/.ssh/id_rsa.pub"
     subnet:
       vpc2_pub1:
-        cidr_block: "10.0.2.0/24"
+        cidr_block: "10.0.1.0/24"
         availability_zone: us-east-1b
+        associate_with: igw1
         public: true
         tags:
           Name: vpc2_pub1
+      vpc2_pub2:
+        cidr_block: "10.0.2.0/24"
+        availability_zone: us-east-1a
+        associate_with: igw1
+        public: true
+        tags:
+          Name: vpc2_pub2
+      vpc2_priv1:
+        cidr_block: "10.0.3.0/24"
+        availability_zone: us-east-1b
+        associate_with: ngw1
+        public: true
+        tags:
+          Name: vpc2_priv1
+      vpc2_priv2:
+        cidr_block: "10.0.4.0/24"
+        availability_zone: us-east-1a
+        associate_with: ngw1
+        public: true
+        tags:
+          Name: vpc2_pub2
     env: qat
     internet_gateway:
-      vpc2_pub1:
-        name: igw1
+      igw1:
+      - vpc2_pub1  
+      - vpc2_pub2
     nat_gateway:
-      vpc2_pub1:
+      vpc2_priv1:
         name: ngw1
-        private: false
-        public: true
+        private: true
+        public: false
+      vpc2_priv2:
+        name: ngw1
+        private: true
+        public: false
     tags:
      env: qat
      Name: qat_vpc

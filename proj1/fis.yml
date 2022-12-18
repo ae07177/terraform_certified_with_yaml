@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: v1.0 FIS experiment template
+Parameters:
+  EC2InstanceName:
+    Type: String
+    ConstraintDescription: Name of the EC2 Instances
+    Default: 'webserver-1'
+Resources:
+  ExperimentTemplate:
+    Type: 'AWS::FIS::ExperimentTemplate'
+    Properties:
+      Actions:
+        StopInstances:
+          ActionId: 'aws:ec2:stop-instances'
+          Targets:
+            Instances: 'webservers'
+      Description: 'terminate ec2 instances'
+      RoleArn: !GetAtt 'Role.Arn'
+      Targets:
+        webservers:
+          ResourceTags:
+            'Name': !Ref EC2InstanceName
+          ResourceType: 'aws:ec2:instance'
+          SelectionMode: 'ALL'
+      StopConditions:
+      - Source: 'none'
+      Tags:
+        Purpose: Testing FIS
+
+  Role:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: 'fis.amazonaws.com'
+          Action: 'sts:AssumeRole'
+      Policies:
+      - PolicyName: fis
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Sid: AllowFISExperimentRoleEC2Actions
+            Effect: Allow
+            Action:
+            - 'ec2:StopInstances'
+            - 'ec2:StartInstances'
+            Resource: !Sub 'arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:instance/*'
