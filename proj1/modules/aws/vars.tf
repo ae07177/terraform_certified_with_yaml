@@ -93,6 +93,20 @@ locals {
     ]
   ])
 
+
+  rtb = flatten([
+    for vpc in local.vpcs : [
+      for k,v in vpc.route_table_assoc : {
+          env          = vpc.env
+          vpc_name     = vpc.name
+          subnet_name  = can(k) ? k : null
+          gw           = can(v.gw) ? v.gw : null
+          public       = can(v.public) ? v.public : false
+        }
+    ]
+  ])
+
+
   sgroups = flatten([
     for vpc in local.vpcs : [
       for k, v in vpc.security_groups : {

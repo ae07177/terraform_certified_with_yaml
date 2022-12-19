@@ -104,6 +104,19 @@ vpc:
       igw1:
       - vpc1_pub1
       - vpc1_pub2
+    route_table_assoc:
+      vpc1_priv1:
+        gw: ngw1
+        public: false
+      vpc1_pub1:
+        gw: igw1
+        public: true
+      vpc1_priv2:
+        gw: ngw1
+        public: false
+      vpc1_pub2:
+        gw: igw1
+        public: true
     nat_gateway:
       vpc1_priv1:
         name: ngw1
@@ -223,6 +236,19 @@ vpc:
       igw1:
       - vpc2_pub1  
       - vpc2_pub2
+    route_table_assoc:
+      vpc1_priv1:
+        gw: ngw1
+        public: false
+      vpc1_pub1:
+        gw: igw1
+        public: true
+      vpc1_priv1:
+        gw: ngw1
+        public: false
+      vpc1_pub2:
+        gw: igw1
+        public: true
     nat_gateway:
       vpc2_priv1:
         name: ngw1
