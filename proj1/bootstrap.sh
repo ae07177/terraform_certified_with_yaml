@@ -1,5 +1,5 @@
-#!/bin/sh
-yum -y install httpd php mysql php-mysql
+#!/bin/bash
+yum -y install httpd php mysql php-mysql > /root/http.log 2>&1
 
 case $(ps -p 1 -o comm | tail -1) in
 systemd) systemctl enable --now httpd ;;

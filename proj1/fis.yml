@@ -4,24 +4,27 @@ Parameters:
   EC2InstanceName:
     Type: String
     ConstraintDescription: Name of the EC2 Instances
-    Default: 'webserver-1'
+    Default: 'prd_fis_asg'
 Resources:
   ExperimentTemplate:
     Type: 'AWS::FIS::ExperimentTemplate'
     Properties:
       Actions:
         StopInstances:
-          ActionId: 'aws:ec2:stop-instances'
+          ActionId: 'aws:ec2:terminate-instances'
           Targets:
-            Instances: 'webservers'
+            Instances: 'prd_fis_asg'
       Description: 'terminate ec2 instances'
       RoleArn: !GetAtt 'Role.Arn'
       Targets:
-        webservers:
+        prd_fis_asg:
           ResourceTags:
             'Name': !Ref EC2InstanceName
           ResourceType: 'aws:ec2:instance'
-          SelectionMode: 'ALL'
+          Filters:
+          - Path: "State.Name"
+            Values: ["running"]
+          SelectionMode: 'PERCENT(50)'
       StopConditions:
       - Source: 'none'
       Tags:
@@ -47,4 +50,5 @@ Resources:
             Action:
             - 'ec2:StopInstances'
             - 'ec2:StartInstances'
+            - 'ec2:TerminateInstances'
             Resource: !Sub 'arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:instance/*'
