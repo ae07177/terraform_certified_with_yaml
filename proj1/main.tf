@@ -1,6 +1,13 @@
-provider "aws" {
-  region  = "us-east-1"
-  profile = "default"
+variable "region" {
+  type        = string
+  description = "AWS Region"
+  default     = "us-east-1"
+}
+
+variable "profile" {
+  type        = string
+  description = "AWS Profile"
+  default     = "acguru"
 }
 
 variable "yaml_config" {
@@ -14,7 +21,9 @@ variable "yaml_config" {
 
 
 module "vpc" {
-  source    = "./modules/aws"
-  yaml_file = var.yaml_config
+  source         = "./modules/aws"
+  yaml_file      = var.yaml_config
+  module_region  = var.region
+  module_profile = var.profile
   #  security_group_name = var.security_group_name
 }

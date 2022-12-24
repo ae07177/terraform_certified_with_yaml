@@ -19,7 +19,7 @@ resource "aws_route" "aws_route" {
     }
   route_table_id         = aws_route_table.aws_route_table["${each.value.vpc_name}_${each.value.subnet_name}_${each.value.gw}"].id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = each.value.public ? aws_internet_gateway.aws_internet_gateway["${each.value.vpc_name}_${each.value.gw}"].id : aws_nat_gateway.aws_nat_gateway["${each.value.vpc_name}_${each.value.subnet_name}_${each.value.gw}"].id
+  gateway_id             = each.value.public ? aws_internet_gateway.aws_internet_gateway["${each.value.vpc_name}_${each.value.gw}"].id : aws_nat_gateway.aws_nat_gateway["${each.value.vpc_name}_${each.value.route_sub}_${each.value.gw}"].id
 }
 
 resource "aws_route_table_association" "aws_route_table_association" {

@@ -1,7 +1,23 @@
+variable "module_region" {
+  type        = string
+  description = "AWS Region"
+  default     = null
+}
+
+variable "module_profile" {
+  type        = string
+  description = "AWS Profile"
+  default     = null
+}
+
+provider "aws" {
+  region  = var.module_region
+  profile = var.module_profile
+}
+
 variable "yaml_file" {
   type        = string
   description = "file location for yaml config data"
-  #default     = "/Users/arvind/terraform_certified_with_yaml/proj1/vars.yaml"
   default     = null
 }
 
@@ -61,6 +77,7 @@ locals {
         tags              = vpc.tags
         public            = v.public
         private           = v.private
+        pub_sub           = v.pub_sub
       }
     ]
   ])
@@ -101,6 +118,7 @@ locals {
           vpc_name     = vpc.name
           subnet_name  = can(k) ? k : null
           gw           = can(v.gw) ? v.gw : null
+          route_sub    = can(v.public) ? k : v.nat_subnet
           public       = can(v.public) ? v.public : false
         }
     ]

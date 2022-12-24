@@ -6,8 +6,8 @@ vpc:
         launch_config:
         - prd_fis1
         vpc_zone_identifier: 
-        -  vpc1_pub1
-        -  vpc1_pub2
+        -  vpc1_priv1
+        -  vpc1_priv2
         max_size: 4
         min_size: 2
         health_check_grace_period: 60
@@ -108,24 +108,28 @@ vpc:
       vpc1_priv1:
         gw: ngw1
         public: false
+        nat_subnet: vpc1_pub1
       vpc1_pub1:
         gw: igw1
         public: true
       vpc1_priv2:
         gw: ngw1
         public: false
+        nat_subnet: vpc1_pub2
       vpc1_pub2:
         gw: igw1
         public: true
     nat_gateway:
       vpc1_priv1:
         name: ngw1
-        private: true
-        public: false
+        private: false
+        public: true
+        pub_sub: vpc1_pub1
       vpc1_priv2:
         name: ngw1
-        private: true
-        public: false
+        private: false
+        public: true
+        pub_sub: vpc1_pub2
     env: prd
     tags:
      Name: prd_vpc
@@ -240,12 +244,14 @@ vpc:
       vpc1_priv1:
         gw: ngw1
         public: false
+        nat_subnet: vpc2_pub1
       vpc1_pub1:
         gw: igw1
         public: true
-      vpc1_priv1:
+      vpc1_priv2:
         gw: ngw1
         public: false
+        nat_subnet: vpc2_pub2
       vpc1_pub2:
         gw: igw1
         public: true
@@ -254,10 +260,12 @@ vpc:
         name: ngw1
         private: true
         public: false
+        pub_sub: vpc2_pub1
       vpc2_priv2:
         name: ngw1
         private: true
         public: false
+        pub_sub: vpc2_pub1
     tags:
      env: qat
      Name: qat_vpc
